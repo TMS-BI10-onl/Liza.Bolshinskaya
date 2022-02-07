@@ -1,0 +1,36 @@
+Hey!
+It's always a pleasure to check your tasks. :) I smile every time.
+
+Well done!
+
+1.
+b) -0.5
+It's better to add () around 2 name filters. It's not giving the correct result without ().
+
+c) -1
+You shiould filter by id is null. Your query is returning incorrect result.
+
+3.
+a) -1
+Correct answer:
+
+SELECT Название
+FROM Фирмы-производители 
+WHERE id NOT IN (SELECT преп.id_фирмы
+				FROM Фармпрепараты преп
+						JOIN Продажи прод ON преп.id=прод.id_фармпрепарата
+						JOIN Кассовые_чеки чек ON прод.id_чека=чек.id 
+				WHERE YEAR(Дата)=2019)
+b) -1
+Your query won't work. First of all, there is no table in the FROM clause in the subquery.
+Secondly, the task is not about this. :)
+
+c) -1
+Why do you need group by if you don't have aggregative function? It'll cause an error.
+Also, you're trying to count number of sold products. But we are looking for all products in the db.
+
+Mark: 7-4=3
++3 for task 4
+6
+
+I almost commited files with marks, but wanted to give you one last chance to add part 2. And you did it! Lucky you :)
