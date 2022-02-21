@@ -1,0 +1,21 @@
+Well done!
+
+A -0.5
+I can't understand your id and numbers in the 3nf. :(
+
+B -0.5
+Educational number can be a PK itself.
+Also, all these fields are about a student. We don't need to divide them to different tables.
+
+D -0.5
+Correct answer: 2nf
+2nf is not about adding personal id's, it's about adding general id=pk.
+
+E -0.5
+Same.
+
+F -0.25
+We're deleting calculated fields when moving to the 3nf.
+
+
+Mark: 8
