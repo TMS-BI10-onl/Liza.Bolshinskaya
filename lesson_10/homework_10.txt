@@ -1,0 +1,30 @@
+Task_3
+Напишите скрипт для суммы OrderQty для каждого года и зимних месяцев из Production.WorkOrder в виде транспонированной матрицы:
+
+SELECT Year, [1] AS [January], [2] AS [February] , [12] AS [Desember]
+FROM
+(SELECT YEAR(DueDate) AS Year, MONTH(DueDate) AS Month, SUM (OrderQty) AS OrderQty
+    FROM [Production].[WorkOrder]
+    WHERE MONTH(DueDate) = 1 OR MONTH(DueDate) = 2 OR MONTH(DueDate) = 12
+    GROUP BY DueDate
+) AS SourceTable
+PIVOT
+( 
+   SUM (OrderQty)
+   FOR Month IN ([1], [2], [12])
+) AS PivotTable
+ORDER BY Year;
+
+-----
+Задачи_Ресторан
+Таблицы:
+1) Заказы (id, номер заказа, номер столика, фио официанта, фио повара, дата заказа, название блюда)
+2) Блюда (id, название, цена)
+3) Посетители (id, номер столика, сумма чека)
+4) Официанты (id, фио)
+5) Повара (id, фио)
+6) График работы (id, рабочие дни, дата заказа)
+7) Выручка (id, дата, сумма)
+
+1. Посчитать выручку за январь 2022 года по заказам, которые обслуживал официант Иванов И.И.
+2. Определить среднюю сумму чека столика №1 за 2021 год по заказам, стоимость которых превысила 300 рублей.
