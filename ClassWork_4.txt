@@ -1,0 +1,32 @@
+1.	Написать запрос на добавление в таблицу manufacturer нового производителя HP из Америки.
+2.	Написать запрос, благодаря которому возраст пользователя Андрей в таблице user уменьшится в 3 раза.
+3.	Найти название продукта с максимальной ценой.
+4.	Написать запрос на выборку всех пользователей с телефонами, начинающимися на 3 и заканчивающимися на 4, либо с возрастом > 35.
+5.	Найти топ 5 пользователей, кто купил больше всего продуктов.
+
+
+1.	INSERT INTO manufacturer (id, name, country_id)
+	VALUES (5, ‘HP’, 4)
+
+2.	UPDATE user
+	SET age = ‘6’
+	WHERE name = ‘Андрей’
+
+3.	SELECT name, price
+	FROM product
+	WHERE price = (SELECT MAX(price) AS max_price
+                       FROM product)
+
+4.	SELECT t1.name, t2.name
+	FROM user t1
+		JOIN (SELECT name FROM phone) t2
+		ON t1.id = t2.user_id
+	WHERE t2.name = '+3%4' OR t1.name > 35
+
+5.	SELECT TOP 5 user.name, product.max_count
+	FROM user
+   	JOIN order ON user.id=order.user_id
+	JOIN (SELECT MAX(count) OVER (PARTITION BY user.name) AS max_count
+	FROM product ON order.product_id=product.id
+	ORDER BY product.max_count DESC
+
