@@ -1,0 +1,63 @@
+1. Покажите всех менеджеров, которые имеют в подчинении больше 6-ти сотрудников.
+
+SELECT First Name, Last Name, COUNT(1)
+FROM EMPLOYEES e LEFT JOIN EMPLOYEES m ON e.EmployeeID=m.ManagerID
+HAVING COUNT(1)>6
+
+2. Вывести min и max зарплату с вычетом commission_pct для каждого департамента. (commission_pct на базе указывается в процентах).
+
+SELECT Department_Name, MIN_salary-MIN_salary*Commission_pct/100 as net_min_salary, MAX_salary-MAX_salary*Commission_pct/100 as net_max_salary
+FROM DEPARTMENTS d LEFT JOIN EMPLOYEES e ON d.Manager_ID= e. Employee_ID LEFT JOIN JOBS j ON e.Job_ID=j.Job_ID
+GROUP BY Department_Name
+
+3. Вывести только регион, где работают больше всего людей.
+
+SELECT Region_Name
+FROM
+(
+SELECT Region_Name, MAX(total_cnt) OVER () as max_total_cnt
+FROM
+(
+SELECT Region_Name, COUNT(d.Manager_ID) as total_cnt
+FROM REGIONS r LEFT JOIN COUNTRIES c ON r.Region_ID= c.Region_ID LEFT JOIN LOCATION l ON c.Country_ID= l.Country_ID LEFT JOIN DEPARTMENTS d  ON l.Location_ID= d. Location_ID
+GROUP BY Region_Name
+) t
+) q
+WHERE total_cnt=max_total_cnt
+
+4. Найдите разницу в процентах между средней зп по каждому департаменту от общей средней (по всем департаментам).
+
+WITH temp AS
+(
+SELECT Department_Name, AVG(Salary) as avg_salary
+FROM DEPARTMENTS d LEFT JOIN EMPLOYEES e ON d.Manager_ID= e. Employee_ID
+) temp
+SELECT Department_Name, (avg_salary_byDepartment - avg_salary)/avg_salary *100  as salary difference_pct
+FROM
+(
+SELECT Department_Name, avg_salary, AVG(Salary) as avg_salary_byDepartment
+FROM temp
+GROUP BY Department_Name
+) t
+
+5. Найдите людей, кто проработал больше, чем 10 лет в одном департаменте.
+
+SELECT First_Name, Last_Name
+FROM
+(
+SELECT First_Name, Last_Name, Department_Name, DATEIFF(YEAR, START_Date, END_Date) as year_cnt
+FROM DEPARTMENTS d LEFT JOIN EMPLOYEES e ON d.Manager_ID= e. Employee_ID LEFT JOIN JOB_HISTORY j ON d.Department_ID=j.Department_ID
+GROUP BY First_Name, Last_Name, Department_Name
+) t
+WHERE year_cnt >10
+
+6. Найдите людей, кто занимает 5-10 место по размеру зарплаты.
+
+SELECT First_Name, Last_Name
+FROM 
+(
+SELECT First_Name, Last_Name, Salary, RANK() OVER(ORDER BY Salary DESC) as rnk
+FROM EMPLOYEES
+GROUP BY First_Name, Last_Name
+)
+WHERE rnk BETWEEN 5 AND 10
