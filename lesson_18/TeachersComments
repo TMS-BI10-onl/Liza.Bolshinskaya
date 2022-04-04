@@ -1,0 +1,28 @@
+Well done!
+
+1. -0.25
+Error: ambiguous column name. You need to specify from which table you're taking names.
+
+3. -0.25
+Not the easiest way here. With top and order it can be solved in one query.
+
+4. -1
+Can be solved in one query, not in 3, with window functions.
+
+5. -0.5
+End_date can be null, you need to handle it. Also, why do we need a subquery? Datediff is perfectly working in the where clause.
+
+6. -0.25
+Why do we need a group by?
+
+Mark: 8
+
+Test notes:
+KPI font is not the same. The font size is too small.
+Count of movies - Axis titles are not changed. What is a better filter for last 25 years: create a filter by release_date (not release date year), select relative date filtering and then type "in the last 25 years".
+Top 5 genres - numbers don't match. You should use gross_with_inflation as a value.
+No dividing lines between buttons.
+Bottom left table - I don't want to see a scroll option. You could make first column smaller.
+Also, it was mentioned that it needed to be one page with 2 views.
+
+Test mark: 8
